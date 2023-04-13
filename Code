@@ -13,7 +13,7 @@
 	</style>
 	<script>
 		var player;
-		var playlistId = "XXENTER YOUR PLAYLIST ID HERE-";
+		var playlistId = "ENTER YOUR PLAYLIST ID HERE-";
 		var shuffleArray = [];
 		var currentIndex = 0;
 
