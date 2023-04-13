@@ -1,3 +1,6 @@
+******Insert your YouTube playlist ID in line 18 - "var playlistId = "XXENTER YOUR PLAYLIST ID HERE-";"******
+
+
 <!DOCTYPE html>
 <html>
 <head>
