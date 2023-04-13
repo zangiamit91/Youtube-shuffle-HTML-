@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YouTube Playlist Player</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://www.youtube.com/iframe_api"></script>
+	<style>
+		#player {
+			height: 360px;
+			width: 640px;
+		}
+	</style>
+	<script>
+		var player;
+		var playlistId = "XXENTER YOUR PLAYLIST ID HERE-";
+		var shuffleArray = [];
+		var currentIndex = 0;
+
+		function shuffle(array) {
+			var currentIndex = array.length, temporaryValue, randomIndex;
+			while (0 !== currentIndex) {
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+			return array;
+		}
+
+		function shuff_list() {
+			shuffleArray = shuffle(shuffleArray);
+			currentIndex = 0;
+			player.loadVideoById(shuffleArray[currentIndex]);
+			player.playVideo();
+		}
+
+		function playPrevVideo() {
+			if (currentIndex > 0) {
+				currentIndex--;
+				player.loadVideoById(shuffleArray[currentIndex]);
+				player.playVideo();
+			}
+		}
+
+		function playNextVideo() {
+			if (currentIndex < shuffleArray.length - 1) {
+				currentIndex++;
+				player.loadVideoById(shuffleArray[currentIndex]);
+				player.playVideo();
+			} else {
+				shuff_list();
+			}
+		}
+
+		function togglePlayPause() {
+			if (player.getPlayerState() == YT.PlayerState.PLAYING) {
+				player.pauseVideo();
+			} else {
+				player.playVideo();
+			}
+		}
+
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('player', {
+				height: '360',
+				width: '640',
+				playerVars: {
+					listType: 'playlist',
+					list: playlistId,
+					autoplay: 1,
+					controls: 0,
+					showinfo: 0,
+					rel: 0,
+					modestbranding: 1
+				},
+				events: {
+					'onReady': onPlayerReady,
+					'onStateChange': onPlayerStateChange
+				}
+			});
+		}
+
+		function onPlayerReady(event) {
+			shuffleArray = player.getPlaylist();
+			shuffleArray.shift();
+			shuffleArray = shuffle(shuffleArray);
+			player.loadVideoById(shuffleArray[currentIndex]);
+			player.playVideo();
+		}
+
+		function onPlayerStateChange(event) {
+			if (event.data == YT.PlayerState.ENDED) {
+				playNextVideo();
+			}
+		}
+	</script>
+</head>
+<body>
+	<div>
+		<h1>YouTube Playlist Player</h1>
+		<p>.</p>
+	</div>
+
+	<div>
+		<button onclick="shuff_list()">Shuffle List</button>
+		<button onclick="playPrevVideo()">Back</button>
+		<button onclick="togglePlayPause()">
+			<span id="play-pause-icon">&#9658;</span>
+		</button>
+		<button onclick="playNextVideo()">Next</button>
+	</div>
+
+	<div id="player"></div>
+
+	<div>
+		<p>
+	</div>
+
+</body>
+</
